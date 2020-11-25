@@ -11,6 +11,12 @@ namespace ConsistentRingHashing
             ringHasing.addNode("Node2");
             ringHasing.addNode("Node3");
             ringHasing.addNode("Node4");
+
+            Console.WriteLine(ringHasing.addKey("This"));
+            Console.WriteLine(ringHasing.addKey("is"));
+            Console.WriteLine(ringHasing.addKey("just"));
+            Console.WriteLine(ringHasing.addKey("a"));
+            Console.WriteLine(ringHasing.addKey("test"));
         }
     }
 }

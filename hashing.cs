@@ -14,7 +14,7 @@ namespace ConsistentRingHashing
 
         private List<int> nodeArray = new List<int>();
 
-        private Dictionary<string, List<int>> nodeHashmap = new Dictionary<string, List<int>>();
+        private Dictionary<int, string> nodeHashmap = new Dictionary<int, string>();
 
         public int hash(string key)
         {
@@ -41,17 +41,27 @@ namespace ConsistentRingHashing
 
         public void addNode(string nodeName)
         {
-            List<int> nodeHashes = new List<int>();
             for (int nodeNum = 0; nodeNum < this.replicationFactor; nodeNum++)
             {
                 string key = hashKey(nodeName, nodeNum);
                 int hashedNode = hash(key);
                 nodeArray.Add(hashedNode);
-                nodeHashes.Add(hashedNode);
+                nodeHashmap.Add(hashedNode, key);
                 numOfNodes += 1;
             }
-            nodeHashmap.Add(nodeName, nodeHashes);
             nodeArray.Sort();
+        }
+
+
+        public string addKey(string key)
+        {
+            if (nodeArray.Count == 0) throw new AccessViolationException("No nodes in ring");
+            int hashedKey = hash(key);
+            foreach (int nodeHash in nodeArray)
+            {
+                if (nodeHash > hashedKey) return nodeHashmap[nodeHash];
+            }
+            return nodeHashmap[nodeArray[0]];
         }
     }
 }
